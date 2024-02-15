@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PublicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,18 @@ use App\Http\Controllers\UserController;
 Route::get('/home', function () {
     return view('welcome');
 });
+
 Route::get('/register', [UserController::class, 'showAccount'])->name('account');
-    Route::get('/', [UserController::class, 'index'])->name('home');
-    Route::post('/registerUser', [UserController::class, 'creatAccount'])->name('accountCreat');
-    Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::get('/', [UserController::class, 'index'])->name('home');
+Route::post('/registerUser', [UserController::class, 'creatAccount'])->name('accountCreat');
+Route::post('/login', [UserController::class, 'login'])->name('login');
+
+
+Route::get('/create', [PublicationController::class, 'create'])->name('publication.create');
+Route::post('/bo', [PublicationController::class, 'store'])->name('publication.store');
+
+Route::get('/{id}/edit', [PublicationController::class, 'edit'])->name('publication.edit');
+Route::delete('/{id}/destroy', [PublicationController::class, 'destroy'])->name('publication.destroy');
+Route::put('/{id}', [PublicationController::class, 'update'])->name('publication.update');
+
+

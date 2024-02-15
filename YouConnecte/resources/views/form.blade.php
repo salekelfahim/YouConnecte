@@ -2,46 +2,62 @@
 
 @section('content')
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-
-<body>
-
-    <div class="contanrel p-5 m-5 bg-body-tertiary">
-        
+<div class="contanrel p-5 m-5 bg-body-tertiary">
 
 
-        <h1>Create Book</h1>
-        <form action="{{ route('book.update',$book->id ) }}" method="POST">
-            @csrf
-            @method('Put') 
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" class="form-control" value="{{ $book->title }}" required>
-            </div>
-            <div class="form-group">
-                <label for="author">Author</label>
-                <input type="text" name="author" id="author" class="form-control" value="{{ $book->author }}" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <input name="description" id="description" class="form-control" value="{{ $book->description }}"required>
-            </div>
-            <button type="submit" class="btn btn-primary mt-4">Update</button>
-        </form>
 
 
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" id="id_Pb" onclick="get()" data-bs-toggle="modal" value="1" data-bs-target="#exampleModal">
+        Launch demo modal
+    </button>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($publications as $publication)
+            <tr>
+                <td>
+                    <button type="button" class="btn btn-primary" id="id_Pb" onclick="get()" data-bs-toggle="modal" value="{{$publication->id)}}" data-bs-target="#exampleModal">
+                        Launch demo modal
+                    </button>
+                    <form action="{{ route('book.destroy', $publication->id) }}" method="POST" style="display: inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="container" id="publication">
 
     </div>
+</div>
 
+<script>
+    function get() {
+        let input = document.getElementById("id_Pb").value;
+        let url = `/{{ id_Pb }}/edit`;
 
-
-
-    @endsection
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("publication").innerHTML = xml.responseText;
+            }
+        };
+        xml.open("GET", url, true);
+        xml.send();
+    }
+</script>
+@endsection

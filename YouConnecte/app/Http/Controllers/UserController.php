@@ -56,7 +56,7 @@ class UserController extends Controller
         if (Auth::attempt($donnerUser)) {
             $user = Auth::user();
             session(['user_id' => $user->id, 'user_name' => $user->name]);
-                return redirect()->route('form');
+                return redirect()->route('publication.create');
         }
 
         return back()->with('error', 'Invalid email or password.');
@@ -67,6 +67,6 @@ class UserController extends Controller
         Auth::logout();
         session()->forget(['user_id', 'user_name']);
 
-        return redirect()->route('home');
+        return redirect()->route('publication.create');
     }
 }
