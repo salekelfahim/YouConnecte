@@ -15,14 +15,14 @@ use App\Http\Controllers\PublicationController;
 |
 */
 
-Route::get('/home', function () {
-    return view('welcome');
-});
+Route::get('/accueil', [PublicationController::class, 'index'])->name('accueil');
+Route::get('/{id}/poste', [PublicationController::class, 'ShowPoste'])->name('poste');
 
 Route::get('/register', [UserController::class, 'showAccount'])->name('account');
 Route::get('/', [UserController::class, 'index'])->name('home');
 Route::post('/registerUser', [UserController::class, 'creatAccount'])->name('accountCreat');
 Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
 Route::get('/create', [PublicationController::class, 'create'])->name('publication.create');

@@ -14,7 +14,7 @@ class PublicationController extends Controller
     public function index()
     {
         $publications = Publication::all();
-        return view('Publication', compact('publications'));
+        return view('accueil', compact('publications'));
     
     }
 
@@ -84,5 +84,11 @@ class PublicationController extends Controller
 
         return redirect()->back()
             ->with('success', 'Publication deleted successfully.');
+    }
+
+    public function ShowPoste($id)
+    {
+        $publication = Publication::find($id);
+        return view('poste', compact('publication'));
     }
 }
