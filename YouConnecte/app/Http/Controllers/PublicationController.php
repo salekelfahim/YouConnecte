@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publication;
-use App\Http\Requests\StorePublicationRequest;
-use App\Http\Requests\UpdatePublicationRequest;
+use Illuminate\Http\Request;
+
 
 class PublicationController extends Controller
 {
@@ -13,51 +13,65 @@ class PublicationController extends Controller
      */
     public function index()
     {
-        $Publications = Publication::all();
-        return view('Publication', compact('Publications'));
+        $publications = Publication::all();
+        return view('Publication', compact('publications'));
+    
     }
 
     public function getPublicationUser()
     {
-        $Publications = Publication::where("user_id",session('user_id'))
+        $publications = Publication::where("user_id",session('user_id'))
         ->get();
-        return view('Publication', compact('Publications'));
+        return view('Publication', compact('publications'));
     }
   
-
+    public function create()
+    {
+        $publications = Publication::where("user_id", session('user_id'))
+        ->get();
+        return view('profile', compact('publications'));
+    }
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePublicationRequest $request)
+    public function store(Request  $request)
     {
         //
         $request->validate([
             'content' => 'required',
         ]);
-        $Publication = Publication::create([
+        $publication = Publication::create([
             'content' => $request->content,
             'user_id' => session('user_id'),
+            // session('user_id')
         ]);
-
-        return redirect()->back()
-            ->with('success', 'Publication created successfully.');
+            if( $publication){
+                return redirect()->back()
+                ->with('success', 'Publication created successfully.');
+            }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePublicationRequest $request,string $id)
+    public function edit(string $id)
+    {
+        $publication = Publication::findOrFail($id);
+        return view('formJion', compact('publication'));
+    }
+    public function update(Request $request,string $id)
     {
         //
+
+
         $request->validate([
             'content' => 'required',
         ]);
         
-        $Publication = Publication::findOrFail($id);
-        $Publication->update($request->all());
-
+        $publication = Publication::findOrFail($id);
+        $publication->update($request->all());
         return redirect()->back()
-            ->with('success', 'Publication updated successfully.');
+        ->with('success', 'Publication updated successfully.');
     }
 
     /**
@@ -65,8 +79,8 @@ class PublicationController extends Controller
      */
     public function destroy(string $id)
     {
-        $Publication = Publication::findOrFail($id);
-        $Publication->delete();
+        $publication = Publication::findOrFail($id);
+        $publication->delete();
 
         return redirect()->back()
             ->with('success', 'Publication deleted successfully.');
