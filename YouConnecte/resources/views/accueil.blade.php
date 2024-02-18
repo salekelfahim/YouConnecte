@@ -11,7 +11,7 @@
                     <div class="d-flex flex-row align-items-center"> <img src="{{ asset('images/profile_avatar.png') }}" width="50" class="rounded-circle">
                         <div class="d-flex flex-column ml-2"> <span class="name">{{$publication->user->name}}</span> <small class="text-primary">Collegues</small> </div>
                     </div>
-                    <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{$publication->created_at}}</small> <i class="fa fa-ellipsis-h"></i> </div>
+                    <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{$publication->created_at->diffForHumans()}}</small> <i class="fa fa-ellipsis-h"></i> </div>
                 </div> <img src="{{ asset('images/Réseau_Social_YouConnecte.png') }}" class="img-fluid">
                 <div class="p-2">
                     <p class="text-justify">{{$publication->content}}</p>

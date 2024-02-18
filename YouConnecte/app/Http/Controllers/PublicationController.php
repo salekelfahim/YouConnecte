@@ -13,7 +13,7 @@ class PublicationController extends Controller
      */
     public function index()
     {
-        $publications = Publication::all();
+        $publications = Publication::orderBy('created_at', 'desc')->get();
         return view('accueil', compact('publications'));
     
     }
