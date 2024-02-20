@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Commeter;
 use App\Models\Publication;
+use App\Models\Like;
 use Illuminate\Http\Request;
 
 
@@ -20,19 +21,16 @@ class PublicationController extends Controller
         return view('accueil', compact('publications'));
     }
 
+ 
+
     public function getPublicationUser()
     {
         $publications = Publication::where("user_id", session('user_id'))
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('Publication', compact('publications'));
-    }
-
-    public function create()
-    {
-        $publications = Publication::where("user_id", session('user_id'))
-            ->get();
-        return view('profile', compact('publications'));
+        $likes = Like::all();
+        return view('profile', compact('publications', 'likes'));
+        
     }
     /**
      * Store a newly created resource in storage.
