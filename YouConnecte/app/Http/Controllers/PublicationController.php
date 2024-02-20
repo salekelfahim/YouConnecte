@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publication;
+use App\Models\Like;
 use Illuminate\Http\Request;
 
 
@@ -15,21 +16,18 @@ class PublicationController extends Controller
     {
         $publications = Publication::orderBy('created_at', 'desc')->get();
         return view('accueil', compact('publications'));
-    
     }
+
+ 
 
     public function getPublicationUser()
     {
-        $publications = Publication::where("user_id",session('user_id'))
-        ->get();
-        return view('Publication', compact('publications'));
-    }
-  
-    public function create()
-    {
         $publications = Publication::where("user_id", session('user_id'))
-        ->get();
-        return view('profile', compact('publications'));
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $likes = Like::all();
+        return view('profile', compact('publications', 'likes'));
+        
     }
     /**
      * Store a newly created resource in storage.
@@ -45,10 +43,10 @@ class PublicationController extends Controller
             'user_id' => session('user_id'),
             // session('user_id')
         ]);
-            if( $publication){
-                return redirect()->back()
+        if ($publication) {
+            return redirect()->back()
                 ->with('success', 'Publication created successfully.');
-            }
+        }
     }
 
     /**
@@ -59,7 +57,7 @@ class PublicationController extends Controller
         $publication = Publication::findOrFail($id);
         return view('formJion', compact('publication'));
     }
-    public function update(Request $request,string $id)
+    public function update(Request $request, string $id)
     {
         //
 
@@ -67,11 +65,11 @@ class PublicationController extends Controller
         $request->validate([
             'content' => 'required',
         ]);
-        
+
         $publication = Publication::findOrFail($id);
         $publication->update($request->all());
         return redirect()->back()
-        ->with('success', 'Publication updated successfully.');
+            ->with('success', 'Publication updated successfully.');
     }
 
     /**

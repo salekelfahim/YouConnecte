@@ -4,14 +4,19 @@
 
 
 <div class="container mt-5 mb-5">
-<div class="container" id="publication">
-
-</div> 
+    <div class="container" id="publication">
+       
+    </div>
+    @if(session('success'))
+        <div class="alert alert-success" id ="alert">
+            {{ session('success') }}
+        </div>
+        @endif
     <div class="container p-5 m-5 bg-body-tertiary">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             what in your mind ?
         </button>
-       
+
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -39,6 +44,9 @@
             </div>
         </div>
     </div>
+    @foreach($likes as $like)
+    <div>{{$like->id}}</div>
+    @endforeach
     @foreach ($publications as $publication)
     <div class="row d-flex align-items-center justify-content-center mt-5">
         <div class="col-md-6">
@@ -46,6 +54,9 @@
                 <div class="d-flex justify-content-between p-2 px-3">
                     <div class="d-flex flex-row align-items-center"> <img src="{{ asset('images/profile_avatar.png') }}" width="50" class="rounded-circle">
                         <div class="d-flex flex-column ml-2"> <span class="name">{{$publication->user->name}}</span> <small class="text-primary">Collegues</small> </div>
+                    </div>
+                    <div class="like-icon" onclick="changeColor('{{ $publication->id }}')" id="{{ $publication->id }}">
+                        <i class="bi bi-heart">like</i>
                     </div>
                     <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{$publication->created_at->diffForHumans()}}</small> <i class="fa fa-ellipsis-h"></i> </div>
                 </div> <img src="{{ asset('images/Réseau_Social_YouConnecte.png') }}" class="img-fluid">
@@ -173,6 +184,16 @@
         outline: 0;
         box-shadow: none
     }
+
+    .like-icon {
+        font-size: 24px;
+        color: red;
+        cursor: pointer;
+    }
+
+    .like-icon.clicked i {
+        color: blue;
+    }
 </style>
 
 
@@ -192,6 +213,47 @@
         xml.open("GET", url, true);
         xml.send();
     }
+
+    function changeColor(id) {
+        let icon = document.getElementById(id);
+        icon.classList.toggle('clicked');
+
+        if (icon.classList.contains('clicked')) {
+             addLike(id);
+        } else {
+            deletLike(id);
+        }
+    }
+
+    function addLike(id) {
+        let url = `/likes/${id}`;
+
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert("yes");
+            }
+        };
+        xml.open("GET", url, true);
+        xml.send();
+    }
+
+    function deletLike(id) {
+        let url = `/likesdelet/${id}`;
+
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert("yes delet");
+            } 
+        };
+        xml.open("GET", url, true);
+        xml.send();
+    }
+    setTimeout(function() {
+                var successAlert = document.getElementById('alert');
+                successAlert.style.display = 'none';
+            }, 1000);
 </script>
 
 @endsection
