@@ -26,9 +26,20 @@ class CommeterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        $request->validate([
+            'content' => 'required',
+        ]);
+        $comment = Commeter::create([
+            'content' => $request->content,
+            'user_id' => session('user_id'),
+            'pub_id'=> $id,
+        ]);
+            if($comment){
+                return redirect()->back()
+                ->with('success', 'Publication created successfully.');
+            }
     }
 
     /**
@@ -58,8 +69,11 @@ class CommeterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Commeter $commeter)
+    public function destroy($id)
     {
-        //
+        $comment = Commeter::findOrFail($id);
+        $comment->delete();
+
+        return redirect()->back();
     }
 }

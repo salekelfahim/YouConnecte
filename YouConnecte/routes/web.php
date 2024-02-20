@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\CommeterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\LikeController;
+use App\Models\Commeter;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +43,11 @@ Route::get('/likesdelet/{id}', [LikeController::class, 'delete']);
 
 
 
+
+
+Route::get('/likes/{id}', [LikeController::class, 'store']);
+Route::get('/likesdelet/{id}', [LikeController::class, 'delete']);
+
+
+Route::post('/{id}', [CommeterController::class, 'store'])->name('commenter');
+Route::delete('/{id}/destroy', [CommeterController::class, 'destroy'])->name('comment.destroy');
