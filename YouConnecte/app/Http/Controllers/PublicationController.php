@@ -25,7 +25,7 @@ class PublicationController extends Controller
         $publications = Publication::where("user_id", session('user_id'))
             ->orderBy('created_at', 'desc')
             ->get();
-        $likes = Like::all();
+        $likes = Like::where("user_id", session('user_id'))->get();
         return view('profile', compact('publications', 'likes'));
         
     }
