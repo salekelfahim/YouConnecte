@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CommeterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicationController;
+use App\Models\Commeter;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +34,5 @@ Route::get('/{id}/edit', [PublicationController::class, 'edit'])->name('publicat
 Route::delete('/{id}/destroy', [PublicationController::class, 'destroy'])->name('publication.destroy');
 Route::put('/{id}', [PublicationController::class, 'update'])->name('publication.update');
 
-
+Route::post('/{id}', [CommeterController::class, 'store'])->name('commenter');
+Route::delete('/{id}/destroy', [CommeterController::class, 'destroy'])->name('comment.destroy');

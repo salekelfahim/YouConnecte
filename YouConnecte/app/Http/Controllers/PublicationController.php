@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commeter;
 use App\Models\Publication;
 use Illuminate\Http\Request;
 
@@ -13,22 +14,24 @@ class PublicationController extends Controller
      */
     public function index()
     {
-        $publications = Publication::orderBy('created_at', 'desc')->get();
+        $publications = Publication::with('comments')
+        ->orderBy('created_at', 'desc')
+        ->get();
         return view('accueil', compact('publications'));
-    
     }
 
     public function getPublicationUser()
     {
-        $publications = Publication::where("user_id",session('user_id'))
-        ->get();
+        $publications = Publication::where("user_id", session('user_id'))
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('Publication', compact('publications'));
     }
-  
+
     public function create()
     {
         $publications = Publication::where("user_id", session('user_id'))
-        ->get();
+            ->get();
         return view('profile', compact('publications'));
     }
     /**
@@ -45,10 +48,10 @@ class PublicationController extends Controller
             'user_id' => session('user_id'),
             // session('user_id')
         ]);
-            if( $publication){
-                return redirect()->back()
+        if ($publication) {
+            return redirect()->back()
                 ->with('success', 'Publication created successfully.');
-            }
+        }
     }
 
     /**
@@ -59,7 +62,7 @@ class PublicationController extends Controller
         $publication = Publication::findOrFail($id);
         return view('formJion', compact('publication'));
     }
-    public function update(Request $request,string $id)
+    public function update(Request $request, string $id)
     {
         //
 
@@ -67,11 +70,11 @@ class PublicationController extends Controller
         $request->validate([
             'content' => 'required',
         ]);
-        
+
         $publication = Publication::findOrFail($id);
         $publication->update($request->all());
         return redirect()->back()
-        ->with('success', 'Publication updated successfully.');
+            ->with('success', 'Publication updated successfully.');
     }
 
     /**
@@ -89,6 +92,9 @@ class PublicationController extends Controller
     public function ShowPoste($id)
     {
         $publication = Publication::find($id);
-        return view('poste', compact('publication'));
+        $comments = Commeter::where('pub_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('poste', compact('publication', 'comments'));
     }
 }
