@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commeter;
 use App\Models\Publication;
 use App\Models\Like;
 use Illuminate\Http\Request;
@@ -14,7 +15,9 @@ class PublicationController extends Controller
      */
     public function index()
     {
-        $publications = Publication::orderBy('created_at', 'desc')->get();
+        $publications = Publication::with('comments')
+        ->orderBy('created_at', 'desc')
+        ->get();
         return view('accueil', compact('publications'));
     }
 
@@ -87,6 +90,9 @@ class PublicationController extends Controller
     public function ShowPoste($id)
     {
         $publication = Publication::find($id);
-        return view('poste', compact('publication'));
+        $comments = Commeter::where('pub_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('poste', compact('publication', 'comments'));
     }
 }
