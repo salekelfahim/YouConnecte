@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commeter;
+use App\Models\Like;
+use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Model;
 
 
 class UserController extends Controller
@@ -56,7 +60,7 @@ class UserController extends Controller
         if (Auth::attempt($donnerUser)) {
             $user = Auth::user();
             session(['user_id' => $user->id, 'user_name' => $user->name]);
-                return redirect()->route('publication.create');
+            return redirect()->route('publication.create');
         }
 
         return back()->with('error', 'Invalid email or password.');
@@ -67,6 +71,38 @@ class UserController extends Controller
         Auth::logout();
         session()->forget(['user_id', 'user_name']);
 
-        return redirect()->route('publication.create');
+        return redirect()->route('accueil');
+    }
+
+    public function deactivateAccount()
+    {
+        $user = User::findOrFail(session('user_id'));
+        $user->update(['status' => 'inactive']);
+        Auth::logout();
+        session()->forget(['user_id', 'user_name']);
+
+        return redirect()->route('accueil')
+            ->with('success', 'Account deactivated successfully.');
+    }
+
+    public function showSearch()
+    {   
+        $users = User::where('status', 'active')->get();
+        return view('search')->with(['users' => $users]);
+    }
+
+    public function searchUsers(Request $request)
+    {
+        $keyword = $request->input('title_s');
+        if ($keyword === '') {
+            $users = User::where('status', 'active')->get();
+        } else {
+
+            $users = User::where('name', 'like', '%' . $keyword . '%')
+                ->where('status', 'active')
+                ->get();
+        }
+
+        return view('searchresult')->with(['users' => $users, 'keyword' => $keyword]);
     }
 }

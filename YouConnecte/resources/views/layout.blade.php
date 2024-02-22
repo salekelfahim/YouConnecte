@@ -22,7 +22,7 @@
                         <a class="nav-link" href="{{ route('publication.create') }}">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Reservation</a>
+                        <a class="nav-link" href="{{ route('search') }}">Search</a>
                     </li>
                 </ul>
                 <div class="dropdown">
@@ -57,6 +57,7 @@
         @yield('content')
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </body>
 
 </html>
