@@ -32,7 +32,7 @@ Route::get('/create', [PublicationController::class, 'getPublicationUser'])->nam
 Route::post('/bo', [PublicationController::class, 'store'])->name('publication.store');
 
 Route::get('/{id}/edit', [PublicationController::class, 'edit'])->name('publication.edit');
-Route::delete('/publication/{id}', [PublicationController::class, 'destroy'])->name('publication.destroy');
+Route::delete('/destroy/{id}', [PublicationController::class, 'destroy'])->name('publication.destroy');
 Route::put('/{id}', [PublicationController::class, 'update'])->name('publication.update');
 
 
@@ -54,3 +54,9 @@ Route::delete('/{id}/destroy', [CommeterController::class, 'destroy'])->name('co
 
 Route::post('/abonne/{id}', [CommeterController::class, 'store'])->name('abonne');
 Route::delete('/abonneDestroy/{id}', [CommeterController::class, 'delete'])->name('abonne.destroy');
+Route::delete('/deleteaccount', [UserController::class, 'deactivateAccount'])->name('account.delete');
+
+Route::get('/search', [UserController::class, 'showSearch'])->name('search');
+Route::get('/searchs', [UserController::class, 'searchUsers'])->name('searchresult');
+
+
