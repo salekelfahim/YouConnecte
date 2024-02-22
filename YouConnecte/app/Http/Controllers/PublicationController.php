@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Commeter;
 use App\Models\Publication;
 use App\Models\Like;
+use App\Models\Notification;
+use App\Models\Abonne;
 use Illuminate\Http\Request;
 
 
@@ -16,21 +18,25 @@ class PublicationController extends Controller
     public function index()
     {
         $publications = Publication::with('comments')
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('accueil', compact('publications'));
     }
 
- 
+
 
     public function getPublicationUser()
     {
         $publications = Publication::where("user_id", session('user_id'))
             ->orderBy('created_at', 'desc')
             ->get();
-        $likes = Like::where("user_id", session('user_id'))->get();
-        return view('profile', compact('publications', 'likes'));
         
+        $notifications = Notification::where("user_id_inf", session('user_id'))
+        ->orderBy('created_at', 'desc')
+        ->get();
+        $abonne = Abonne::all();
+
+        return view('profile', compact('publications',"notifications",'abonne'));
     }
     /**
      * Store a newly created resource in storage.

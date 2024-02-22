@@ -23,4 +23,8 @@ class Publication extends Model
     {
         return $this->hasMany(Commeter::class, 'pub_id');
     }
+    public function like()
+    {
+        return $this->hasMany(Like::class, 'pub_id');
+    }
 }
