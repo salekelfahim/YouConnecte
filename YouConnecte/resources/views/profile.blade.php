@@ -5,18 +5,79 @@
 
 <div class="container mt-5 mb-5">
     <div class="container" id="publication">
-       
+
     </div>
     @if(session('success'))
-        <div class="alert alert-success" id ="alert">
-            {{ session('success') }}
-        </div>
-        @endif
-    <div class="container p-5 m-5 bg-body-tertiary">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            what in your mind ?
-        </button>
+    <div class="alert alert-success" id="alert">
+        {{ session('success') }}
+    </div>
+    @endif
 
+    <div class="container p-5 m-5 bg-body-tertiary ">
+
+        <div class="cardd w-100">
+
+            <div class="d-flex align-items-center">
+
+                <div class="image p-4">
+                    <img src="{{ asset('images/profile_avatar.png') }}" class="rounded" width="200">
+                </div>
+
+                <div class="ml-5 w-50">
+
+                    <h4 class="mb-4 mt-0">{{session('user_name')}}</h4>
+
+                    <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
+
+                        <div class="d-flex flex-column">
+
+                            <span class="articles">Posts</span>
+                            <span class="number1">{{$publications->count()}}</span>
+
+                        </div>
+
+                        <div class="d-flex flex-column">
+
+                            <span class="followers">Followers</span>
+                            <span class="number2">-</span>
+
+                        </div>
+
+
+                        <div class="d-flex flex-column">
+
+                            <span class="rating">Rating</span>
+                            <span class="number3">-</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="button mt-2 d-flex flex-row align-items-center">
+
+                        <!-- <button class="btn btn-sm btn-outline-primary w-100">Chat</button> -->
+                        <form action="{{ route('account.delete') }}" method="POST" style="display: inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-primary w-100" onclick="return confirm('Are you sure you want to delete your Account?')">Delete</button>
+                    </form>
+                        <button type="button" class="btn btn-sm btn-primary w-100 ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            what in your mind ?
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -194,6 +255,51 @@
     .like-icon.clicked i {
         color: blue;
     }
+
+
+    .cardd {
+        width: 400px;
+        border: none;
+        border-radius: 10px;
+
+        background-color: #fff;
+    }
+
+
+    .stats {
+
+        background: #f2f5f8 !important;
+
+        color: #000 !important;
+    }
+
+    .articles {
+        font-size: 10px;
+        color: #a1aab9;
+    }
+
+    .number1 {
+        font-weight: 500;
+    }
+
+    .followers {
+        font-size: 10px;
+        color: #a1aab9;
+
+    }
+
+    .number2 {
+        font-weight: 500;
+    }
+
+    .rating {
+        font-size: 10px;
+        color: #a1aab9;
+    }
+
+    .number3 {
+        font-weight: 500;
+    }
 </style>
 
 
@@ -219,7 +325,7 @@
         icon.classList.toggle('clicked');
 
         if (icon.classList.contains('clicked')) {
-             addLike(id);
+            addLike(id);
         } else {
             deletLike(id);
         }
@@ -245,15 +351,15 @@
         xml.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 alert("yes delet");
-            } 
+            }
         };
         xml.open("GET", url, true);
         xml.send();
     }
     setTimeout(function() {
-                var successAlert = document.getElementById('alert');
-                successAlert.style.display = 'none';
-            }, 1000);
+        var successAlert = document.getElementById('alert');
+        successAlert.style.display = 'none';
+    }, 1000);
 </script>
 
 @endsection

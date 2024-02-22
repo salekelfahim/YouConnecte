@@ -7,9 +7,15 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="d-flex justify-content-between p-2 px-3">
-                    <div class="d-flex flex-row align-items-center"> <img src="{{ asset('images/profile_avatar.png') }}" width="50" class="rounded-circle">
-                        <div class="d-flex flex-column ml-2"> <span class="name">{{$publication->user->name}}</span> <small class="text-primary">Collegues</small> </div>
+                @if ( $publication->user->status === 'inactive')
+                <div class="d-flex flex-row align-items-center"> <img src="{{ asset('images/149071.png') }}" width="50" class="rounded-circle">
+                        <div class="d-flex flex-column ml-2"> <span class="name">User</span></div>
                     </div>
+                    @else
+                    <div class="d-flex flex-row align-items-center"> <img src="{{ asset('images/profile_avatar.png') }}" width="50" class="rounded-circle">
+                        <div class="d-flex flex-column ml-2"> <span class="name">{{$publication->user->name}}</span></div>
+                    </div>
+                    @endif
                     <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{$publication->created_at->diffForHumans()}}</small> <i class="fa fa-ellipsis-h"></i> </div>
                 </div> <img src="{{ asset('images/Réseau_Social_YouConnecte.png') }}" class="img-fluid">
                 <div class="p-2">
@@ -22,8 +28,13 @@
                     <hr>
                     <div class="comments">
                     @foreach ($comments as $comment)
-                        <div class="d-flex flex-row mb-2"> <img src="{{ asset('images/profile_avatar.png') }}" width="30" class="rounded-image">
+                    @if ( $comment->user->status === 'inactive')
+                        <div class="d-flex flex-row mb-2"> <img src="{{ asset('images/149071.png') }}" width="30" class="rounded-image">
+                            <div class="d-flex flex-column ml-4"> <span class="name">User</span>
+                            @else
+                            <div class="d-flex flex-row mb-2"> <img src="{{ asset('images/profile_avatar.png') }}" width="30" class="rounded-image">
                             <div class="d-flex flex-column ml-4"> <span class="name">{{$comment->user->name}}</span>
+                            @endif
                                 <p>{{$comment->content}}</p>
                                 <div class="d-flex flex-row align-items-center status"> <small>
                                         @if (auth()->check())
