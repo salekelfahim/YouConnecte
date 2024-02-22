@@ -5,17 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Like extends Model
+class Notification extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id',
-        'pub_id',
+        'content',
         'user_id',
+        'user_id_inf',
     ];
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-  
 }

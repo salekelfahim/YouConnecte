@@ -52,6 +52,8 @@ Route::get('/likesdelet/{id}', [LikeController::class, 'delete']);
 Route::post('/{id}', [CommeterController::class, 'store'])->name('commenter');
 Route::delete('/{id}/destroy', [CommeterController::class, 'destroy'])->name('comment.destroy');
 
+Route::post('/abonne/{id}', [CommeterController::class, 'store'])->name('abonne');
+Route::delete('/abonneDestroy/{id}', [CommeterController::class, 'delete'])->name('abonne.destroy');
 Route::delete('/deleteaccount', [UserController::class, 'deactivateAccount'])->name('account.delete');
 
 Route::get('/search', [UserController::class, 'showSearch'])->name('search');

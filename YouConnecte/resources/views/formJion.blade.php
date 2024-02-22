@@ -1,4 +1,4 @@
-<div class="z-1 position-absolute rounded-3 text-bg-primary  p-5 ">
+<div class="z-1 position-absolute rounded-3 text-bg-primary  p-5  ">
     <form action="{{ route('publication.update', $publication->id)}}" method="POST">
         @csrf
         @method('PUT')

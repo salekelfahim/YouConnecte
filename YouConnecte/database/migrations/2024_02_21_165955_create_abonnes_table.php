@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commeters', function (Blueprint $table) {
-            $table->id();
-            $table->string('content');
-            $table->unsignedBigInteger('pub_id');
-            $table->foreign('pub_id')->references('id')->on('publications')
-            ->onDelete('cascade')->onUpdate('cascade');
+        Schema::create('abonnes', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('following_id');
+            $table->foreign('following_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commeters');
+        Schema::dropIfExists('abonnes');
     }
 };
