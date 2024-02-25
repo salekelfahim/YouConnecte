@@ -34,9 +34,8 @@ class PublicationController extends Controller
         $notifications = Notification::where("user_id_inf", session('user_id'))
         ->orderBy('created_at', 'desc')
         ->get();
-        $abonne = Abonne::all();
 
-        return view('profile', compact('publications',"notifications",'abonne'));
+        return view('profile', compact('publications',"notifications"));
     }
     /**
      * Store a newly created resource in storage.

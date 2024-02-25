@@ -1,6 +1,6 @@
 
 
-@isset($users)
+
         @foreach($users as $user)
         <div class="col mb-3">
           <div class="card">
@@ -18,6 +18,4 @@
           </div>
         </div>
        @endforeach
-       @else
-        <p>No users found for ''</p>
-    @endisset
+      
