@@ -169,16 +169,28 @@
                 </div>
                 <hr>
                 <div class="comments">
-                    <div class="d-flex flex-row mb-2"> <img src="{{ asset('images/profile_avatar.png') }}" width="30" class="rounded-image">
-                        <div class="d-flex flex-column ml-4"> <span class="name">Daniel Frozer</span> <small class="comment-text">I like this alot! thanks alot</small>
-                            <!-- <div class="d-flex flex-row align-items-center status"> <small>Like</small> <small>Reply</small> <small>Translate</small> <small>18 mins</small> </div> -->
+                        @if ($publication->comments)
+                        @foreach($publication->comments as $comment)
+                        @if ( $comment->user->status === 'inactive')
+                        <div class="d-flex flex-row mb-2"> <img src="{{ asset('images/149071.png') }}" width="30" class="rounded-image">
+                            <div class="d-flex flex-column ml-4"> <span class="name">User</span>
+                            @else
+                            <div class="d-flex flex-row mb-2"> <img src="{{ asset('images/profile_avatar.png') }}" width="30" class="rounded-image">
+                            <div class="d-flex flex-column ml-4"> <span class="name">{{$comment->user->name}}</span>
+                            @endif
+                            <small class="comment-text">{{$comment->content}}</small>
+                                <!-- <div class="d-flex flex-row align-items-center status"> <small>Like</small> <small>Reply</small> <small>Translate</small> <small>18 mins</small> </div> -->
+                            </div>
                         </div>
-                    </div>
-                    <!-- <div class="comment-input"> <input type="text" class="form-control">
+                        <!-- <div class="comment-input"> <input type="text" class="form-control">
                             <div class="fonts"> <i class="fa fa-camera"></i> </div>
                         </div> -->
-                    <a class="d-flex flex-row muted-color" href="{{ route('poste', ['id' => $publication->id]) }}"> >>View More<< </a>
+                        @endforeach
+                        @endif
+                        <a class="d-flex flex-row muted-color" href="{{ route('poste', ['id' => $publication->id]) }}"> >>View More<< </a>
+                    </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

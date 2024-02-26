@@ -24,6 +24,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('search') }}">Search</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('chatify') }}">Messages</a>
+                    </li>
                 </ul>
                 <div class="dropdown">
                     <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">

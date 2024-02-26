@@ -27,7 +27,8 @@ class PublicationController extends Controller
 
     public function getPublicationUser()
     {
-        $publications = Publication::where("user_id", session('user_id'))
+        $publications = Publication::with('comments')
+            ->where("user_id", session('user_id'))
             ->orderBy('created_at', 'desc')
             ->get();
         
