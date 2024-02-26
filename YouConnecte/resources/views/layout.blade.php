@@ -26,6 +26,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('search') }}">Search</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('chatify') }}">Messages</a>
+                    </li>
                     @endif
                 </ul>
                 

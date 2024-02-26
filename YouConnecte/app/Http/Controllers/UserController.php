@@ -55,16 +55,22 @@ class UserController extends Controller
 
 
     public function login(Request $request)
-    {
-        $donnerUser = $request->only('email', 'password');
-        if (Auth::attempt($donnerUser)) {
-            $user = Auth::user();
-            session(['user_id' => $user->id, 'user_name' => $user->name]);
-            return redirect()->route('publication.create');
-        }
+{
+    $donnerUser = $request->only('email', 'password');
+    $user = User::where('email', $donnerUser['email'])->first();
 
-        return back()->with('error', 'Invalid email or password.');
+    if ($user && $user->status === 'inactive') {
+        return back()->with('error', 'Your account is deleted. Please create new one.');
     }
+
+    if (Auth::attempt($donnerUser)) {
+        $user = Auth::user();
+        session(['user_id' => $user->id, 'user_name' => $user->name]);
+        return redirect()->route('publication.create');
+    }
+
+    return back()->with('error', 'Invalid email or password.');
+}
 
     public function logout()
     {
