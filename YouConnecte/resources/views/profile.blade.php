@@ -58,10 +58,10 @@
 
                         <!-- <button class="btn btn-sm btn-outline-primary w-100">Chat</button> -->
                         <form action="{{ route('account.delete') }}" method="POST" style="display: inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-outline-primary w-100" onclick="return confirm('Are you sure you want to delete your Account?')">Delete</button>
-                    </form>
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-primary w-100" onclick="return confirm('Are you sure you want to delete your Account?')">Delete</button>
+                        </form>
                         <button type="button" class="btn btn-sm btn-primary w-100 ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             what in your mind ?
                         </button>
@@ -91,36 +91,36 @@
         @endforeach
     </ul>
 </div>
-     
 
 
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h1>Create post</h1>
-                    <form action="{{ route('publication.store') }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" name="content" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-4">Submit</button>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h1>Create post</h1>
+                <form action="{{ route('publication.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="content" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 @foreach ($publications as $publication)
@@ -133,16 +133,17 @@
                 </div>
                 <div id="{{ $publication->id }}">
                     @if ($publication->like->contains('user_id',session('user_id') ))
-
-
-                    <div class="like-icon" onclick="deletLike('{{ $publication->id }}')">
-                        <i class="bi bi-heart">like</i>
+                    <div class="like-icon" onclick="deletLike('{{ $publication->id }}')" id="{{ $publication->id }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="red" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
                         <i>{{$publication->like->count()}}</i>
                     </div>
-
                     @else
-                    <div class="like-icon" onclick="addLike('{{ $publication->id }}')">
-                        <i class="bi bi-heart">like not </i>
+                    <div onclick="addLike('{{ $publication->id }}')" id="{{ $publication->id }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
                         <i>{{$publication->like->count()}}</i>
                     </div>
                     @endif
@@ -289,17 +290,6 @@
         box-shadow: none
     }
 
-    .like-icon {
-        font-size: 24px;
-        color: red;
-        cursor: pointer;
-    }
-
-    .like-icon.clicked i {
-        color: blue;
-    }
-
-
     .cardd {
         width: 400px;
         border: none;
@@ -364,37 +354,7 @@
         xml.send();
     }
 
-    function f(id) {
-        let url = `/abonne/${id}`;
 
-        let xml = new XMLHttpRequest();
-        xml.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("pub" + id);
-                document.getElementById(id).innerHTML = xml.responseText;
-            }
-        };
-        xml.open("GET", url, true);
-        xml.send();
-        if (icon.classList.contains('clicked')) {
-            addLike(id);
-        } else {
-            deletLike(id);
-        }
-    }
-
-    function nf(id) {
-        let url = `/abonneDestroy/${id}`;
-        let xml = new XMLHttpRequest();
-        xml.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log("pub" + id);
-                document.getElementById(id).innerHTML = xml.responseText;
-            }
-        };
-        xml.open("GET", url, true);
-        xml.send();
-    }
 
 
 
