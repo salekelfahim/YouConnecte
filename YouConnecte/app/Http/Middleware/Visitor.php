@@ -6,20 +6,24 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Authenticate 
+
+
+class Visitor
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
     
-            if ((session('user_name'))) {
+            if (empty(session('user_name'))) {
                 return $next($request);
             }
     
 
-            return redirect()->route('home');
+            return redirect()->route('publication.create');
             
     }
 }

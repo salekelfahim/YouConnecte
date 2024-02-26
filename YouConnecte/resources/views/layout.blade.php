@@ -16,7 +16,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+           
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                @if(session('user_name'))
                     <li class="nav-item">
                  
                         <a class="nav-link" href="{{ route('publication.create') }}">Profile</a>
@@ -24,7 +26,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('search') }}">Search</a>
                     </li>
+                    @endif
                 </ul>
+                
                 <div class="dropdown">
                     <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
 

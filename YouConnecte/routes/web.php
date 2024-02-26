@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\AbonneController;
 use App\Models\Commeter;
 
 /*
@@ -17,46 +18,47 @@ use App\Models\Commeter;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/accueil', [PublicationController::class, 'index'])->name('accueil');
 Route::get('/{id}/poste', [PublicationController::class, 'ShowPoste'])->name('poste');
+Route::middleware(['vistor'])->group(function () {
 
-Route::get('/register', [UserController::class, 'showAccount'])->name('account');
-Route::get('/', [UserController::class, 'index'])->name('home');
-Route::post('/registerUser', [UserController::class, 'creatAccount'])->name('accountCreat');
-Route::post('/login', [UserController::class, 'login'])->name('login');
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+    Route::get('/', [UserController::class, 'index'])->name('home');
+    Route::post('/registerUser', [UserController::class, 'creatAccount'])->name('accountCreat');
+    Route::post('/login', [UserController::class, 'login'])->name('login');
+    Route::get('/register', [UserController::class, 'showAccount'])->name('account');
+  
+});
+Route::middleware('auth')->group(function () {
 
-
-Route::get('/create', [PublicationController::class, 'getPublicationUser'])->name('publication.create');
-Route::post('/bo', [PublicationController::class, 'store'])->name('publication.store');
-
-Route::get('/{id}/edit', [PublicationController::class, 'edit'])->name('publication.edit');
-Route::delete('/destroy/{id}', [PublicationController::class, 'destroy'])->name('publication.destroy');
-Route::put('/{id}', [PublicationController::class, 'update'])->name('publication.update');
+   
 
 
 
-
-Route::get('/likes/{id}', [LikeController::class, 'store']);
-Route::get('/likesdelet/{id}', [LikeController::class, 'delete']);
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
+    Route::get('/profile', [PublicationController::class, 'getPublicationUser'])->name('publication.create');
+    Route::post('/pub', [PublicationController::class, 'store'])->name('publication.store');
+
+    Route::get('/{id}/edit', [PublicationController::class, 'edit'])->name('publication.edit');
+    Route::delete('/destroy/{id}', [PublicationController::class, 'destroy'])->name('publication.destroy');
+    Route::put('/{id}', [PublicationController::class, 'update'])->name('publication.update');
 
 
 
-Route::get('/likes/{id}', [LikeController::class, 'store']);
-Route::get('/likesdelet/{id}', [LikeController::class, 'delete']);
+
+    Route::get('/likes/{id}', [LikeController::class, 'store']);
+    Route::get('/likesdelet/{id}', [LikeController::class, 'delete']);
 
 
-Route::post('/{id}', [CommeterController::class, 'store'])->name('commenter');
-Route::delete('/{id}/destroy', [CommeterController::class, 'destroy'])->name('comment.destroy');
+    Route::post('/{id}', [CommeterController::class, 'store'])->name('commenter');
+    Route::delete('/{id}/destroy', [CommeterController::class, 'destroy'])->name('comment.destroy');
 
-Route::post('/abonne/{id}', [CommeterController::class, 'store'])->name('abonne');
-Route::delete('/abonneDestroy/{id}', [CommeterController::class, 'delete'])->name('abonne.destroy');
-Route::delete('/deleteaccount', [UserController::class, 'deactivateAccount'])->name('account.delete');
+    Route::get('/abonne/{id}', [AbonneController::class, 'store'])->name('abonne');
+    Route::get('/abonneDestroy/{id}', [AbonneController::class, 'delete'])->name('abonne.destroy');
 
-Route::get('/search', [UserController::class, 'showSearch'])->name('search');
-Route::get('/searchs', [UserController::class, 'searchUsers'])->name('searchresult');
+    Route::delete('/deleteaccount', [UserController::class, 'deactivateAccount'])->name('account.delete');
 
-
+    Route::get('/search', [UserController::class, 'showSearch'])->name('search');
+    Route::get('/searchs', [UserController::class, 'searchUsers'])->name('searchresult');
+});
