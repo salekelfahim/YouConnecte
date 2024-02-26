@@ -32,7 +32,7 @@ class PublicationController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         
-        $notifications = Notification::where("user_id_inf", session('user_id'))
+        $notifications = Notification::where("user_id", session('user_id'))
         ->orderBy('created_at', 'desc')
         ->get();
 
