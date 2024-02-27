@@ -6,16 +6,22 @@ use App\Models\Commeter;
 use App\Models\Like;
 use App\Models\Publication;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\Model;
+use App\Services\IUserService;
 
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(IUserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function index()
     {
         return view("login");
@@ -24,8 +30,6 @@ class UserController extends Controller
     {
         return view("account");
     }
-
-
 
     public function creatAccount(Request $request)
     {
@@ -39,43 +43,35 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
 
-
-        User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+        $this->userService->registerUser(
+            $request->name,
+            $request->email,
+            $request->password
+        );
 
         Session::flash('success', 'Registration successful. Please login.');
 
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
-
-
-
 
     public function login(Request $request)
-{
-    $donnerUser = $request->only('email', 'password');
-    $user = User::where('email', $donnerUser['email'])->first();
-
-    if ($user && $user->status === 'inactive') {
-        return back()->with('error', 'Your account is deleted. Please create new one.');
-    }
-
-    if (Auth::attempt($donnerUser)) {
-        $user = Auth::user();
-        session(['user_id' => $user->id, 'user_name' => $user->name]);
-        return redirect()->route('publication.create');
-    }
-
-    return back()->with('error', 'Invalid email or password.');
-}
-
-    public function logout()
     {
-        Auth::logout();
-        session()->forget(['user_id', 'user_name']);
+        $donnerUser = $request->only('email', 'password');
+        
+
+        if ($this->userService->loginUser($donnerUser['email'], $donnerUser['password'])) {
+            return redirect()->route('publication.create');
+        }
+        return redirect()->route('publication.create');
+    //     return back()->with('error', 'Invalid email or password.');
+     }
+
+    public function logout(Request $request)
+    {
+        $this->userService->logoutUser();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('accueil');
     }
