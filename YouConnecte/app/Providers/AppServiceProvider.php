@@ -4,7 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-
+use App\Repository\UserRepository;
+use App\Repository\IUserRepository;
+use App\Services\UserService;
+use App\Services\IUserService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +17,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
-        Schema::defaultStringLength(750);
+        $this->app->bind(IUserService::class, UserService::class);
+        $this->app->bind(IUserRepository::class, UserRepository::class);
+        
     }
 
     /**
@@ -23,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Schema::defaultStringLength(750);
     }
 }
