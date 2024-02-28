@@ -131,6 +131,22 @@
                 <div class="d-flex flex-row align-items-center"> <img src="{{ asset('images/profile_avatar.png') }}" width="50" class="rounded-circle">
                     <div class="d-flex flex-column ml-2"> <span class="name">{{$publication->user->name}}</span> <small class="text-primary">Collegues</small> </div>
                 </div>
+                
+
+                <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{$publication->created_at->diffForHumans()}}</small> <i class="fa fa-ellipsis-h"></i> </div>
+            </div> <img src="{{ asset('images/Réseau_Social_YouConnecte.png') }}" class="img-fluid">
+            <div class="p-2">
+                <p class="text-justify">{{$publication->content}}</p>
+                <button type="button" class="btn btn-primary" onclick="get('{{ $publication->id }}')">
+                    Update
+                </button>
+                <form action="{{ route('publication.destroy', $publication->id) }}" method="POST" style="display: inline-block;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
+                </form>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center">
                 <div id="{{ $publication->id }}">
                     @if ($publication->like->contains('user_id',session('user_id') ))
                     <div class="like-icon" onclick="deletLike('{{ $publication->id }}')" id="{{ $publication->id }}">
@@ -148,23 +164,6 @@
                     </div>
                     @endif
                 </div>
-
-
-
-                <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{$publication->created_at->diffForHumans()}}</small> <i class="fa fa-ellipsis-h"></i> </div>
-            </div> <img src="{{ asset('images/Réseau_Social_YouConnecte.png') }}" class="img-fluid">
-            <div class="p-2">
-                <p class="text-justify">{{$publication->content}}</p>
-                <button type="button" class="btn btn-primary" onclick="get('{{ $publication->id }}')">
-                    Update
-                </button>
-                <form action="{{ route('publication.destroy', $publication->id) }}" method="POST" style="display: inline-block;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
-                </form>
-                <hr>
-                <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex flex-row icons d-flex align-items-center"> <i class="fa fa-heart"></i> <i class="fa fa-smile-o ml-2"></i> </div>
                     <!-- <div class="d-flex flex-row muted-color"> <span>2 comments</span> </div> -->
                 </div>

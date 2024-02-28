@@ -9,6 +9,12 @@
 </div>
 @endif
 
+@if(session('error'))
+<div class="alert alert-danger" id="alert">
+    {{ session('error') }}
+</div>
+@endif
+
 <div class="container p-5">
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 col-sm-8 border rounded mb-2 p-3">
