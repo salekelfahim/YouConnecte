@@ -29,9 +29,8 @@ class UserService implements IUserService
     public function loginUser($email, $password)
     {
         $credentials = compact('email', 'password');
-        $user = Auth::user();
-        session(['user_id' => $user->id, 'user_name' => $user->name]);
         if (auth()->attempt($credentials)) {
+            ;
             return true;
         }
 

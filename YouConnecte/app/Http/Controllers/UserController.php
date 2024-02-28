@@ -51,7 +51,7 @@ class UserController extends Controller
 
         Session::flash('success', 'Registration successful. Please login.');
 
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 
     public function login(Request $request)
@@ -62,7 +62,7 @@ class UserController extends Controller
         if ($this->userService->loginUser($donnerUser['email'], $donnerUser['password'])) {
             return redirect()->route('publication.create');
         }
-        return redirect()->route('publication.create');
+        return redirect()->route('home');
     //     return back()->with('error', 'Invalid email or password.');
      }
 
