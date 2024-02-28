@@ -17,6 +17,13 @@
                         <div class="d-flex flex-column ml-2"> <span class="name">{{$publication->user->name}}</span></div>
                     </div>
                     @endif
+                    
+                    <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{$publication->created_at->diffForHumans()}}</small> <i class="fa fa-ellipsis-h"></i> </div>
+                </div> <img src="{{ asset('images/Réseau_Social_YouConnecte.png') }}" class="img-fluid">
+                <div class="p-2">
+                    <p class="text-justify">{{$publication->content}}</p>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
                     <div id="{{ $publication->id }}">
                         @if(session('user_id'))
                         @if ($publication->like->contains('user_id',session('user_id') ))
@@ -44,12 +51,6 @@
                         </div>
                         @endif
                     </div>
-                    <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{$publication->created_at->diffForHumans()}}</small> <i class="fa fa-ellipsis-h"></i> </div>
-                </div> <img src="{{ asset('images/Réseau_Social_YouConnecte.png') }}" class="img-fluid">
-                <div class="p-2">
-                    <p class="text-justify">{{$publication->content}}</p>
-                    <hr>
-                    <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-row icons d-flex align-items-center"> <i class="fa fa-heart"></i> <i class="fa fa-smile-o ml-2"></i> </div>
                         <div class="d-flex flex-row muted-color"> <span>{{$publication->comments->count()}} comments</span> </div>
                     </div>
