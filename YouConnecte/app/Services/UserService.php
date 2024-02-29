@@ -28,7 +28,7 @@ class UserService implements IUserService
 
     public function loginUser($email, $password)
     {
-        $user = User::where('email',$email )->first();
+        $user = $this->userRepository->whereEmail($email);
         $donnerUser = compact('email', 'password');
         if (auth()->attempt($donnerUser) && $user && $user->status === 'active') {
             session(['user_id' => $user->id, 'user_name' => $user->name]);
