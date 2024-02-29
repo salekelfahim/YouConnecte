@@ -28,9 +28,10 @@ class UserService implements IUserService
 
     public function loginUser($email, $password)
     {
-        $credentials = compact('email', 'password');
-        if (auth()->attempt($credentials)) {
-            ;
+        $user = User::where('email',$email )->first();
+        $donnerUser = compact('email', 'password');
+        if (auth()->attempt($donnerUser) && $user && $user->status === 'active') {
+            session(['user_id' => $user->id, 'user_name' => $user->name]);
             return true;
         }
 
@@ -42,3 +43,6 @@ class UserService implements IUserService
         auth()->logout();
     }
 }
+
+
+
