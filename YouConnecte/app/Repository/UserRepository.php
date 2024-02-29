@@ -9,4 +9,8 @@ class UserRepository implements IUserRepository
     {
         return User::create($data);
     }
+    public function whereEmail(string $email)
+    {
+        return User::where('email', $email)->first();
+    }
 }
